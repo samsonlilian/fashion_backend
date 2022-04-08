@@ -9,7 +9,7 @@ class Fashion extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'gender', 'age_range', 'title', 'keywords', 'cover_img', 'desc', 'desc_long'
+        'gender', 'age_range', 'title', 'keywords', 'cover_img', 'desc', 'desc_long', 'type_of_wears'
     ];
 
     public function getCoverImgAttribute($value)

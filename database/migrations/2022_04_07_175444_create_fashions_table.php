@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('cover_img');
             $table->string('desc');
             $table->text('desc_long');
+            $table->text('type_of_wears'); //0 native 1:english
 
             $table->timestamps();
         });

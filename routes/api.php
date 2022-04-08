@@ -35,6 +35,7 @@ Route::post('register', [AuthApiController::class, 'createUserAccount']);
 Route::post('login', [AuthApiController::class, 'loginUser']);
 
 Route::post('fashion', [FashionApiController::class, 'store']);
+Route::get('fashion', [FashionApiController::class, 'searchFashion']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
