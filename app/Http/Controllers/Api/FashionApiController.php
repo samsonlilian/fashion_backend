@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Fashion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\FashionImages;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic;
 
@@ -76,10 +77,56 @@ class FashionApiController extends Controller
             $new_fashion->cover_img = $name;
             $new_fashion->save();
         }
+        //
+        if ($request->hasFile('file_one')) {
+            $image_tmp = $request->file_one;
+            $name = $this->storeFile($image_tmp, 'images');
+            FashionImages::create([
+                'fashion_id' => $new_fashion->id,
+                'image' => $name
+            ]);
+        }
+
+        if ($request->hasFile('file_two')) {
+            $image_tmp = $request->file_two;
+            $name = $this->storeFile($image_tmp, 'images');
+            FashionImages::create([
+                'fashion_id' => $new_fashion->id,
+                'image' => $name
+            ]);
+        }
+        if ($request->hasFile('file_three')) {
+            $image_tmp = $request->file_three;
+            $name = $this->storeFile($image_tmp, 'images');
+            FashionImages::create([
+                'fashion_id' => $new_fashion->id,
+                'image' => $name
+            ]);
+        }
         return response([
             'status' => 'success',
             'data' => Fashion::getFashions()
         ]);
+    }
+
+
+    //
+    public function fashionDetail($id)
+    {
+        $fashionQuery = Fashion::where('id', $id);
+        if ($fashionQuery->exists()) {
+            //
+            return response([
+                'status' => 'success',
+                'data' => $fashionQuery->first()
+            ]);
+            //
+        } else {
+            return response([
+                'status' => 'error',
+                'data' => []
+            ]);
+        }
     }
 
     public function storeFile($file, $folderName)
