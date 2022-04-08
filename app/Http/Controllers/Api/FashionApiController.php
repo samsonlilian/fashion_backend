@@ -15,21 +15,25 @@ class FashionApiController extends Controller
     {
         $gender = request('gender') ?? 'all';
         $age_range = request('age_range') ?? 'all';
-        $type_of_wears = request('age_range') ?? 'all';
+        $type_of_wears = request('type_of_wears') ?? 'all';
         $keywords = request('title')   ?? 'all';
+
+
+
+
 
         $fashions =   Fashion::orderBy('id', "DESC")
             ->when($gender != 'all', function ($q) use ($gender) {
                 return $q->where('gender', $gender);
             })
             ->when($age_range != 'all', function ($q) use ($age_range) {
-                return $q->where('age_range', $age_range);
+                return $q->where('age_range', (int) $age_range);
             })
             ->when($type_of_wears != 'all', function ($q) use ($type_of_wears) {
                 return $q->where('type_of_wears', $type_of_wears);
             })
             ->when($keywords != 'all', function ($q) use ($keywords) {
-                return $q->where('title', 'LIKE', "%{$keywords}%");
+                return $q->where('title', 'LIKE', "%{$keywords}%")->orWhere('keywords', 'LIKE', "%{$keywords}%");
             })
             ->take(16)
             ->get();
