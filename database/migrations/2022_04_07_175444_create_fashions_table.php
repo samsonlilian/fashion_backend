@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('fashions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('role')->default(1);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('api_token');
-            $table->rememberToken();
+            $table->integer('gender'); // male 0  && female 1
+            $table->integer('age_range'); // > 50 =  1    && < 50  = 0
+            $table->string('title');
+            $table->string('keywords');
+            $table->string('cover_img');
+            $table->string('desc');
+            $table->text('desc_long');
+
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('fashions');
     }
 };
