@@ -19,25 +19,7 @@ class FashionApiController extends Controller
         $type_of_wears = request('type_of_wears') ?? 'all';
         $keywords = request('title')   ?? 'all';
 
-
-
-
-
-        $fashions =   Fashion::orderBy('id', "DESC")
-            ->when($gender != 'all', function ($q) use ($gender) {
-                return $q->where('gender', $gender);
-            })
-            ->when($age_range != 'all', function ($q) use ($age_range) {
-                return $q->where('age_range', (int) $age_range);
-            })
-            ->when($type_of_wears != 'all', function ($q) use ($type_of_wears) {
-                return $q->where('type_of_wears', $type_of_wears);
-            })
-            ->when($keywords != 'all', function ($q) use ($keywords) {
-                return $q->where('title', 'LIKE', "%{$keywords}%")->orWhere('keywords', 'LIKE', "%{$keywords}%");
-            })
-            ->take(16)
-            ->get();
+        $fashions =  Fashion::getFashions($gender, $age_range, $type_of_wears, $keywords);
 
         return response([
             'status' => 'success',
@@ -113,7 +95,7 @@ class FashionApiController extends Controller
     //
     public function fashionDetail($id)
     {
-        $fashionQuery = Fashion::where('id', $id);
+        $fashionQuery = Fashion::with(['images'])->where('id', $id);
         if ($fashionQuery->exists()) {
             //
             return response([
